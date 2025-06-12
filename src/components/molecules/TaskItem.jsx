@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { format, isToday, isTomorrow, isPast } from 'date-fns';
-import ApperIcon from './ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
+import Input from '@/components/atoms/Input';
 
 function TaskItem({ task, category, onUpdate, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -65,7 +67,7 @@ function TaskItem({ task, category, onUpdate, onDelete }) {
     >
       <div className="flex items-start gap-3">
         {/* Completion Checkbox */}
-        <motion.button
+        <Button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleComplete}
@@ -84,7 +86,7 @@ function TaskItem({ task, category, onUpdate, onDelete }) {
               <ApperIcon name="Check" className="w-3 h-3" />
             </motion.div>
           )}
-        </motion.button>
+        </Button>
 
         {/* Task Content */}
         <div className="flex-1 min-w-0">
@@ -94,13 +96,13 @@ function TaskItem({ task, category, onUpdate, onDelete }) {
             
             {/* Task Title */}
             {isEditing ? (
-              <input
+              <Input
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
                 onBlur={handleSaveEdit}
                 onKeyDown={handleKeyPress}
-                className="flex-1 bg-transparent border-b border-primary focus:outline-none font-medium text-secondary"
+                className="flex-1 bg-transparent border-b border-primary focus:outline-none font-medium text-secondary py-0 px-0"
                 autoFocus
               />
             ) : (
@@ -145,7 +147,7 @@ function TaskItem({ task, category, onUpdate, onDelete }) {
 
             {/* Actions */}
             <div className="flex items-center gap-1">
-              <motion.button
+              <Button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsEditing(true)}
@@ -153,9 +155,9 @@ function TaskItem({ task, category, onUpdate, onDelete }) {
                 title="Edit task"
               >
                 <ApperIcon name="Edit2" className="w-3 h-3" />
-              </motion.button>
+              </Button>
               
-              <motion.button
+              <Button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => onDelete(task.id)}
@@ -163,7 +165,7 @@ function TaskItem({ task, category, onUpdate, onDelete }) {
                 title="Delete task"
               >
                 <ApperIcon name="Trash2" className="w-3 h-3" />
-              </motion.button>
+              </Button>
             </div>
           </div>
         </div>

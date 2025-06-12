@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import TaskList from '../components/TaskList';
-import CategorySidebar from '../components/CategorySidebar';
-import SearchBar from '../components/SearchBar';
-import AddTaskForm from '../components/AddTaskForm';
-import ProgressRing from '../components/ProgressRing';
-import ApperIcon from '../components/ApperIcon';
-import { taskService, categoryService } from '../services';
+import { taskService, categoryService } from '@/services';
+import ApperIcon from '@/components/ApperIcon';
 
-function Home() {
+// Organisms
+import CategorySidebar from '@/components/organisms/CategorySidebar';
+import TaskDashboardHeader from '@/components/organisms/TaskDashboardHeader';
+import TaskList from '@/components/organisms/TaskList';
+import AddTaskForm from '@/components/organisms/AddTaskForm';
+import Button from '@/components/atoms/Button';
+
+function HomePage() {
   const [tasks, setTasks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -119,12 +121,12 @@ function Home() {
       (statusFilter === 'pending' && !task.completed);
     
     return matchesCategory && matchesSearch && matchesPriority && matchesStatus;
-  });
+  }).sort((a, b) => a.order - b.order);
 
-  // Calculate completion rate for today
-  const completedTasks = tasks.filter(task => task.completed).length;
-  const totalTasks = tasks.length;
-  const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  // Calculate completion rate
+  const completedTasksCount = tasks.filter(task => task.completed).length;
+  const totalTasksCount = tasks.length;
+  const completionRate = totalTasksCount > 0 ? Math.round((completedTasksCount / totalTasksCount) * 100) : 0;
 
   if (loading) {
     return (
@@ -156,12 +158,12 @@ function Home() {
           <ApperIcon name="AlertCircle" className="w-16 h-16 text-error mx-auto mb-4" />
           <h3 className="text-lg font-medium text-secondary mb-2">Unable to load tasks</h3>
           <p className="text-gray-500 mb-4">{error}</p>
-          <button
+          <Button
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
           >
             Try Again
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -181,42 +183,18 @@ function Home() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header */}
-        <div className="flex-shrink-0 bg-white border-b border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold font-heading text-secondary">
-                TaskFlow
-              </h1>
-              <ProgressRing
-                percentage={completionRate}
-                size={40}
-                strokeWidth={4}
-              />
-              <span className="text-sm text-gray-500">
-                {completedTasks}/{totalTasks} completed
-              </span>
-            </div>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setShowAddForm(true)}
-              className="px-4 py-2 bg-primary text-white rounded-lg font-medium shadow-sm hover:shadow-md transition-shadow"
-            >
-              <ApperIcon name="Plus" className="w-4 h-4 inline mr-2" />
-              Add Task
-            </motion.button>
-          </div>
-
-          <SearchBar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            priorityFilter={priorityFilter}
-            onPriorityFilterChange={setPriorityFilter}
-            statusFilter={statusFilter}
-            onStatusFilterChange={setStatusFilter}
-          />
-        </div>
+        <TaskDashboardHeader
+          completionRate={completionRate}
+          completedTasks={completedTasksCount}
+          totalTasks={totalTasksCount}
+          onAddTaskClick={() => setShowAddForm(true)}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          priorityFilter={priorityFilter}
+          onPriorityFilterChange={setPriorityFilter}
+          statusFilter={statusFilter}
+          onStatusFilterChange={setStatusFilter}
+        />
 
         {/* Task List */}
         <div className="flex-1 overflow-y-auto p-6">
@@ -262,4 +240,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;

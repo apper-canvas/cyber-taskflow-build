@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import TaskItem from './TaskItem';
-import ApperIcon from './ApperIcon';
+import TaskItem from '@/components/molecules/TaskItem';
+import ApperIcon from '@/components/ApperIcon';
 
 function TaskList({ tasks, categories, onUpdateTask, onDeleteTask, onReorderTasks }) {
   const [draggedTask, setDraggedTask] = useState(null);

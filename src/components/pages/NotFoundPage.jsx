@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import ApperIcon from '../components/ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
 
-function NotFound() {
+function NotFoundPage() {
   return (
     <div className="h-full flex items-center justify-center bg-background">
       <motion.div
@@ -30,4 +30,4 @@ function NotFound() {
   );
 }
 
-export default NotFound;
+export default NotFoundPage;

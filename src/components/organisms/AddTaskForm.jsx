@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { format, addDays } from 'date-fns';
-import ApperIcon from './ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
+import Input from '@/components/atoms/Input';
 
 function AddTaskForm({ categories, onSubmit, onCancel }) {
   const [title, setTitle] = useState('');
@@ -38,14 +40,14 @@ function AddTaskForm({ categories, onSubmit, onCancel }) {
         <h3 className="text-lg font-heading font-semibold text-secondary">
           Add New Task
         </h3>
-        <motion.button
+        <Button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={onCancel}
           className="text-gray-400 hover:text-gray-600"
         >
           <ApperIcon name="X" className="w-5 h-5" />
-        </motion.button>
+        </Button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -54,12 +56,11 @@ function AddTaskForm({ categories, onSubmit, onCancel }) {
           <label className="block text-sm font-medium text-secondary mb-2">
             Task Title
           </label>
-          <input
+          <Input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="What needs to be done?"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             autoFocus
             required
           />
@@ -76,13 +77,13 @@ function AddTaskForm({ categories, onSubmit, onCancel }) {
               { value: 'medium', label: 'Medium', color: 'warning', icon: 'Circle' },
               { value: 'low', label: 'Low', color: 'info', icon: 'Minus' }
             ].map(({ value, label, color, icon }) => (
-              <motion.button
+              <Button
                 key={value}
                 type="button"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setPriority(value)}
-                className={`p-3 rounded-lg border-2 transition-all flex items-center justify-center gap-2 ${
+                className={`p-3 rounded-lg border-2 flex items-center justify-center gap-2 ${
                   priority === value
                     ? `border-${color} bg-${color}/10 text-${color}`
                     : 'border-gray-200 hover:border-gray-300'
@@ -90,7 +91,7 @@ function AddTaskForm({ categories, onSubmit, onCancel }) {
               >
                 <ApperIcon name={icon} className="w-4 h-4" />
                 <span className="text-sm font-medium">{label}</span>
-              </motion.button>
+              </Button>
             ))}
           </div>
         </div>
@@ -127,49 +128,48 @@ function AddTaskForm({ categories, onSubmit, onCancel }) {
               { label: 'Tomorrow', days: 1 },
               { label: 'Next Week', days: 7 }
             ].map(({ label, days }) => (
-              <motion.button
+              <Button
                 key={label}
                 type="button"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setQuickDate(days)}
-                className="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition-colors"
+                className="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200"
               >
                 {label}
-              </motion.button>
+              </Button>
             ))}
           </div>
           
-          <input
+          <Input
             type="date"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
 
         {/* Actions */}
         <div className="flex gap-3 pt-4">
-          <motion.button
+          <Button
             type="submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             disabled={!title.trim()}
-            className="flex-1 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="flex-1 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ApperIcon name="Plus" className="w-4 h-4 inline mr-2" />
             Add Task
-          </motion.button>
+          </Button>
           
-          <motion.button
+          <Button
             type="button"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={onCancel}
-            className="px-6 py-3 border border-gray-200 text-gray-600 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+            className="px-6 py-3 border border-gray-200 text-gray-600 rounded-lg font-medium hover:bg-gray-50"
           >
             Cancel
-          </motion.button>
+          </Button>
         </div>
       </form>
     </motion.div>

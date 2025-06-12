@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ApperIcon from './ApperIcon';
+import { AnimatePresence, motion } from 'framer-motion';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
+import Input from '@/components/atoms/Input';
 
 function SearchBar({ 
   searchQuery, 
@@ -28,27 +30,27 @@ function SearchBar({
           name="Search" 
           className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" 
         />
-        <input
+        <Input
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search tasks..."
-          className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
+          className="pl-10 pr-12 py-3 bg-white"
         />
         
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
           {searchQuery && (
-            <motion.button
+            <Button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => onSearchChange('')}
               className="text-gray-400 hover:text-gray-600"
             >
               <ApperIcon name="X" className="w-4 h-4" />
-            </motion.button>
+            </Button>
           )}
           
-          <motion.button
+          <Button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setShowFilters(!showFilters)}
@@ -57,7 +59,7 @@ function SearchBar({
             }`}
           >
             <ApperIcon name="Filter" className="w-4 h-4" />
-          </motion.button>
+          </Button>
         </div>
       </div>
 
@@ -73,14 +75,14 @@ function SearchBar({
             <div className="flex items-center justify-between mb-3">
               <h4 className="font-medium text-secondary">Filters</h4>
               {hasActiveFilters && (
-                <motion.button
+                <Button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={clearAllFilters}
                   className="text-xs text-primary hover:text-primary/80"
                 >
                   Clear all
-                </motion.button>
+                </Button>
               )}
             </div>
             
