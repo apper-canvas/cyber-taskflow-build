@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../App';
 import { taskService, categoryService } from '@/services';
 import ApperIcon from '@/components/ApperIcon';
 
@@ -10,8 +13,11 @@ import TaskDashboardHeader from '@/components/organisms/TaskDashboardHeader';
 import TaskList from '@/components/organisms/TaskList';
 import AddTaskForm from '@/components/organisms/AddTaskForm';
 import Button from '@/components/atoms/Button';
-
 function HomePage() {
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  
   const [tasks, setTasks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,8 +28,17 @@ function HomePage() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [showAddForm, setShowAddForm] = useState(false);
 
+  // Redirect to login if not authenticated
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+  }, [isAuthenticated, navigate]);
+useEffect(() => {
     const loadData = async () => {
+      if (!isAuthenticated) return;
+      
       setLoading(true);
       setError(null);
       try {
@@ -42,7 +57,7 @@ function HomePage() {
     };
     
     loadData();
-  }, []);
+  }, [isAuthenticated]);
 
   const handleAddTask = async (taskData) => {
     try {
@@ -164,9 +179,14 @@ function HomePage() {
           >
             Try Again
           </Button>
-        </div>
+</div>
       </div>
     );
+  }
+
+  // Show loading or redirect if not authenticated
+  if (!isAuthenticated) {
+    return null; // Will redirect in useEffect
   }
 
   return (
